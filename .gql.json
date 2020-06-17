@@ -1,0 +1,6 @@
+{
+  "schema": "introspection.json",
+  "endpoint": "https://api.github.com/graphql",
+  "documents": ".\\**/*.graphql",
+  "custom_header": ""
+}
