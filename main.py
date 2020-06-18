@@ -10,13 +10,11 @@ from accept import AcceptPrs
 from PyInquirer import prompt
 
 token = open('token.txt').read().strip()
-TITLE_RE = re.compile(
-    r'Bump (?P<name>[^ ]+) from (?P<from>[^ ]+) to (?P<to>[^ ]+)'
-)
+TITLE_RE = re.compile(r'Bump (?P<name>[^ ]+) from (?P<from>[^ ]+) to (?P<to>[^ ]+)')
 
 
-K = TypeVar("K")
-V = TypeVar("V")
+K = TypeVar('K')
+V = TypeVar('V')
 
 
 def groupby(iterable: Iterable[V], key: Callable[[V], K]) -> Dict[K, List[V]]:
@@ -24,7 +22,7 @@ def groupby(iterable: Iterable[V], key: Callable[[V], K]) -> Dict[K, List[V]]:
 
 
 def callback(params: Mapping[str, str], headers: Mapping[str, str]) -> None:
-    headers["Authorization"] = f"Bearer {token}"
+    headers['Authorization'] = f'Bearer {token}'
 
 
 def paginate() -> Iterable:
@@ -48,7 +46,7 @@ def paginate() -> Iterable:
 
 def get_message(selected):
     names = {name.repository.name for name in selected}
-    return "Merge?\n" + "".join(f" ● {name}\n" for name in names)
+    return 'Merge?\n' + ''.join(f' ● {name}\n' for name in names)
 
 
 @dataclass
@@ -61,7 +59,7 @@ class AsStr:
 
 
 def get_selected(by_title, answers):
-    return chain.from_iterable(by_title[chosen] for chosen in answers["update"])
+    return chain.from_iterable(by_title[chosen] for chosen in answers['update'])
 
 
 def normalise_title(title: str) -> str:
@@ -72,9 +70,7 @@ def normalise_title(title: str) -> str:
 def main():
     prs = tqdm(paginate())
     prs = list(
-        pr
-        for pr in prs
-        if pr.author.login in {"dependabot", "dependabot-preview"}
+        pr for pr in prs if pr.author.login in {'dependabot', 'dependabot-preview'}
     )
     if not prs:
         print('Nothing to do')
@@ -82,46 +78,42 @@ def main():
 
     by_title = groupby(prs, lambda pr: normalise_title(pr.title))
 
-    answers = {None: None}
+    answers: Dict[Optional[str], Optional[str]] = {None: None}
     answers = prompt(
         [
             {
-                "type": "checkbox",
-                "name": "update",
-                "message": "Which updates to do you want to merge?",
-                "choices": [{'name': name} for name in sorted(by_title)],
+                'type': 'checkbox',
+                'name': 'update',
+                'message': 'Which updates to do you want to merge?',
+                'choices': [{'name': name} for name in sorted(by_title)],
             },
             {
-                "type": "confirm",
-                "message": AsStr(
+                'type': 'confirm',
+                'message': AsStr(
                     answers,
-                    lambda answers: get_message(
-                        get_selected(by_title, answers)
-                    ),
+                    lambda answers: get_message(get_selected(by_title, answers)),
                 ),
-                "name": "merge",
-                "default": False,
+                'name': 'merge',
+                'default': False,
             },
         ],
         answers,
     )
-    title = answers.get("update")
+    title = answers.get('update')
     if not title:
         return
     selected = get_selected(by_title, answers)
-    if answers.get("merge"):
+    if answers.get('merge'):
         for pr in tqdm(selected):
-            errors = AcceptPrs.execute(
-                pr.id, on_before_callback=callback
-            ).errors
+            errors = AcceptPrs.execute(pr.id, on_before_callback=callback).errors
             if errors:
                 print(pr.title, [error['message'] for error in errors])
 
     if not prompt(
-        {"type": "confirm", "message": 'Done?', "name": "done", "default": True}
+        {'type': 'confirm', 'message': 'Done?', 'name': 'done', 'default': True}
     )['done']:
         main()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
