@@ -115,7 +115,7 @@ def main():
                 pr.id, on_before_callback=callback
             ).errors
             if errors:
-                print(pr, errors)
+                print(pr.title, [error['message'] for error in errors])
 
     if not prompt(
         {"type": "confirm", "message": 'Done?', "name": "done", "default": True}
