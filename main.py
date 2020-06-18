@@ -32,12 +32,10 @@ def paginate() -> Iterable:
             cursor=cursor, on_before_callback=callback
         )
 
-        assert pull_requests and pull_requests.data
         repos = pull_requests.data.viewer.repositories
-        assert repos and repos.edges
         for repo in repos.edges:
-            assert repo and repo.node
-            yield from (pr.node for pr in repo.node.pullRequests.edges)
+            for pr in repo.node.pullRequests.edges:
+                yield pr.node
 
         cursor = repos.pageInfo.endCursor
         if cursor is None:
