@@ -67,7 +67,7 @@ def normalise_title(title: str) -> str:
 
 def labs(labels):
     return ", ".join(
-        label.name for label in (labels.nodes)
+        label.name for label in labels.nodes if label.name != "dependencies"
     )
 
 
