@@ -1,6 +1,6 @@
 {
   "schema": "https://github.com/octokit/graphql-schema/raw/master/schema.json",
   "endpoint": "https://api.github.com/graphql",
-  "documents": ".\\**/*.graphql",
+  "documents": "*.graphql",
   "custom_header": ""
 }

@@ -65,6 +65,12 @@ def normalise_title(title: str) -> str:
     return m.group(0) if m else title
 
 
+def labs(labels):
+    return ", ".join(
+        label.name for label in (labels.nodes)
+    )
+
+
 def main():
     prs = tqdm(paginate())
     prs = list(
@@ -74,7 +80,10 @@ def main():
         print('Nothing to do')
         return
 
-    by_title = groupby(prs, lambda pr: normalise_title(pr.title))
+    by_title = groupby(
+        prs,
+        lambda pr: normalise_title(pr.title) + " [" + labs(pr.labels) + "]",
+    )
 
     answers: Dict[Optional[str], Optional[str]] = {None: None}
     answers = prompt(

@@ -14,8 +14,10 @@ query GetPullRequests($cursor: String) {
                 author {
                   login
                 }
-                tags {
-                  name
+                labels(first: 20) {
+                    nodes {
+                        name
+                    }
                 }
                 repository {
                   name
