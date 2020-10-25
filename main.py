@@ -9,7 +9,6 @@ from query import GetPullRequests
 from accept import AcceptPrs
 from PyInquirer import prompt
 
-token = open('token.txt').read().strip()
 TITLE_RE = re.compile(r'Bump (?P<name>[^ ]+) from (?P<from>[^ ]+) to (?P<to>[^ ]+)')
 
 
@@ -21,15 +20,18 @@ def groupby(iterable: Iterable[V], key: Callable[[V], K]) -> Dict[K, List[V]]:
     return {k: list(v) for k, v in _groupby(sorted(iterable, key=key), key)}
 
 
-def callback(params: Mapping[str, str], headers: Mapping[str, str]) -> None:
-    headers['Authorization'] = f'Bearer {token}'
+
+def add_token(token):
+    def callback(params: Mapping[str, str], headers: Mapping[str, str]) -> None:
+        headers['Authorization'] = f'Bearer {token}'
+    return callback
 
 
-def paginate() -> Iterable:
+def paginate(token: str):
     cursor = None
     while True:
         pull_requests: GetPullRequests = GetPullRequests.execute(
-            cursor=cursor, on_before_callback=callback
+            cursor=cursor, on_before_callback=add_token(token)
         )
 
         repos = pull_requests.data.viewer.repositories
@@ -72,7 +74,7 @@ def labs(labels):
 
 
 def main():
-    prs = tqdm(paginate())
+    prs = tqdm(paginate(open('token.txt').read().strip()))
     prs = list(
         pr for pr in prs if pr.author.login in {'dependabot', 'dependabot-preview'}
     )
