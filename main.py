@@ -1,10 +1,12 @@
 import re
 from itertools import groupby as _groupby
-from typing import Iterable, TypeVar, Callable, Dict, List, Mapping
+from typing import Iterable, TypeVar, Callable, Dict, List, Mapping, Optional
 from itertools import chain
 from dataclasses import dataclass
 
 from tqdm import tqdm
+
+# these two files are generated using gql-next: gql run
 from query import GetPullRequests
 from accept import AcceptPrs
 from PyInquirer import prompt
@@ -27,7 +29,12 @@ def add_token(token):
     return callback
 
 
-def paginate(token: str):
+PullRequest = (
+    GetPullRequests.GetPullRequestsData.User.RepositoryConnection.RepositoryEdge.Repository.PullRequestConnection.PullRequestEdge.PullRequest
+)
+
+
+def paginate(token:str) -> Iterable[PullRequest]:
     cursor = None
     while True:
         pull_requests: GetPullRequests = GetPullRequests.execute(
