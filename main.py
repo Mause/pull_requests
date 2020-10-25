@@ -5,11 +5,11 @@ from itertools import chain
 from dataclasses import dataclass
 
 from tqdm import tqdm
+from PyInquirer import prompt
 
 # these two files are generated using gql-next: gql run
 from query import GetPullRequests
 from accept import AcceptPrs
-from PyInquirer import prompt
 
 TITLE_RE = re.compile(r'Bump (?P<name>[^ ]+) from (?P<from>[^ ]+) to (?P<to>[^ ]+)')
 
@@ -81,7 +81,8 @@ def labs(labels):
 
 
 def main():
-    prs = tqdm(paginate(open('token.txt').read().strip()))
+    token = open('token.txt').read().strip()
+    prs = tqdm(paginate(token))
     prs = list(
         pr for pr in prs if pr.author.login in {'dependabot', 'dependabot-preview'}
     )
@@ -121,7 +122,7 @@ def main():
     selected = get_selected(by_title, answers)
     if answers.get('merge'):
         for pr in tqdm(selected):
-            errors = AcceptPrs.execute(pr.id, on_before_callback=callback).errors
+            errors = AcceptPrs.execute(pr.id, on_before_callback=add_token(token)).errors
             if errors:
                 print(pr.title, [error['message'] for error in errors])
 
