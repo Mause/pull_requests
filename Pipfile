@@ -5,13 +5,16 @@ verify_ssl = true
 
 [dev-packages]
 ipdb = "*"
+gql-next = "*"
 
 [packages]
-gql-next = "*"
 aiohttp = "*"
 pyinquirer = "*"
 tqdm = "*"
 flask = "*"
+pyjwt = "*"
+cryptography = "*"
+authlib = "*"
 
 [requires]
 python_version = "3.9"
