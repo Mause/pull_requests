@@ -4,3 +4,5 @@ __pycache__
 accept.py
 query.py
 token.txt
+.env
+*.pem
