@@ -1,15 +1,16 @@
 import re
-from itertools import groupby as _groupby
-from typing import Iterable, TypeVar, Callable, Dict, List, Mapping, Optional
-from itertools import chain
 from dataclasses import dataclass
+from itertools import chain
+from itertools import groupby as _groupby
+from typing import Callable, Dict, Iterable, List, Mapping, Optional, TypeVar
 
-from tqdm import tqdm
 from PyInquirer import prompt
+from tqdm import tqdm
+
+from accept import AcceptPrs
 
 # these two files are generated using gql-next: gql run
 from query import GetPullRequests
-from accept import AcceptPrs
 
 TITLE_RE = re.compile(r'Bump (?P<name>[^ ]+) from (?P<from>[^ ]+) to (?P<to>[^ ]+)')
 
@@ -22,10 +23,10 @@ def groupby(iterable: Iterable[V], key: Callable[[V], K]) -> Dict[K, List[V]]:
     return {k: list(v) for k, v in _groupby(sorted(iterable, key=key), key)}
 
 
-
 def add_token(token):
     def callback(params: Mapping[str, str], headers: Mapping[str, str]) -> None:
         headers['Authorization'] = f'Bearer {token}'
+
     return callback
 
 
@@ -34,7 +35,7 @@ PullRequest = (
 )
 
 
-def paginate(token:str) -> Iterable[PullRequest]:
+def paginate(token: str) -> Iterable[PullRequest]:
     cursor = None
     while True:
         pull_requests: GetPullRequests = GetPullRequests.execute(
@@ -43,8 +44,9 @@ def paginate(token:str) -> Iterable[PullRequest]:
 
         repos = pull_requests.data.viewer.repositories
         for repo in repos.edges:
-            for pr in repo.node.pullRequests.edges:
-                yield pr.node
+            if repo.node:
+                for pr in repo.node.pullRequests.edges:
+                    yield pr.node
 
         cursor = repos.pageInfo.endCursor
         if cursor is None:
@@ -122,7 +124,9 @@ def main():
     selected = get_selected(by_title, answers)
     if answers.get('merge'):
         for pr in tqdm(selected):
-            errors = AcceptPrs.execute(pr.id, on_before_callback=add_token(token)).errors
+            errors = AcceptPrs.execute(
+                pr.id, on_before_callback=add_token(token)
+            ).errors
             if errors:
                 print(pr.title, [error['message'] for error in errors])
 
