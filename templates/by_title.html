@@ -1,0 +1,14 @@
+<form method="POST">
+  <ul>
+    {% for title, prs in by_title.items() %}
+    <li>
+      <label>
+        <input name="{{title}}" type="checkbox" value='{{ prs | tojson }}' />
+        {{title}}
+      </label>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <input type="submit" value="Merge" />
+</form>
