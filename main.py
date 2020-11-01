@@ -82,20 +82,18 @@ def labs(labels):
     )
 
 
+def get_by_title(token: str) -> Dict[str, List[PullRequest]]:
+    prs = paginate(token)
+    prs = (pr for pr in prs if pr.author.login in {'dependabot', 'dependabot-preview'})
+    return groupby(prs, lambda pr: normalise_title(pr.title))
+
+
 def main():
     token = open('token.txt').read().strip()
-    prs = tqdm(paginate(token))
-    prs = list(
-        pr for pr in prs if pr.author.login in {'dependabot', 'dependabot-preview'}
-    )
-    if not prs:
+    by_title = get_by_title(token)
+    if not by_title:
         print('Nothing to do')
         return
-
-    by_title = groupby(
-        prs,
-        lambda pr: normalise_title(pr.title) + " [" + labs(pr.labels) + "]",
-    )
 
     answers: Dict[Optional[str], Optional[str]] = {None: None}
     answers = prompt(
