@@ -6,6 +6,8 @@ verify_ssl = true
 [dev-packages]
 ipdb = "*"
 gql-next = "*"
+python-dotenv = "*"
+pre-commit = "*"
 
 [packages]
 aiohttp = "*"
