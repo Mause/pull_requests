@@ -1,3 +1,9 @@
+<ul>
+  {% for message in get_flashed_messages() %}
+  <li>{{ message }}</li>
+  {% endfor %}
+</ul>
+
 <form method="POST">
   <ul>
     {% for title, prs in by_title.items() %}

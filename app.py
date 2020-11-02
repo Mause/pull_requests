@@ -11,6 +11,7 @@ from authlib.integrations.flask_client import OAuth
 from flask import (
     Blueprint,
     Flask,
+    flash,
     jsonify,
     redirect,
     render_template,
@@ -107,7 +108,18 @@ def post():
         )
     )
 
-    return jsonify(selected=list(selected), gathered=list(gathered))
+    did_error = False
+    for repo, result in gathered:
+        if result.errors:
+            print(result)
+            did_error = True
+            for error in result.errors:
+                flash(f'Merging pr into {repo} resulted in "{error["message"]}"')
+
+    if not did_error:
+        flash('Completed without error')
+
+    return redirect(url_for('.index'))
 
 
 @app.route('/', methods=['POST', 'GET'])
