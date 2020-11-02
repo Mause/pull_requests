@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import time
 from asyncio import gather, get_event_loop, new_event_loop, set_event_loop
 from collections import ChainMap
 from datetime import datetime, timedelta, timezone
@@ -34,6 +35,20 @@ def fetch_token():
     return session.get('token')
 
 
+def compliance_fix(session):
+    def _fix_token_response(resp):
+        data = resp.json()
+
+        data['refresh_token_expires_at'] = (
+            time.time() + data['refresh_token_expires_in']
+        )
+
+        resp.json = lambda: data
+        return resp
+
+    session.register_compliance_hook('access_token_response', _fix_token_response)
+
+
 oauth = OAuth()
 oauth.register(
     'github',
@@ -43,6 +58,7 @@ oauth.register(
     access_token_url='https://github.com/login/oauth/access_token',
     userinfo_url='https://api.github.com/user',
     fetch_token=fetch_token,
+    compliance_fix=compliance_fix,
 )
 
 
