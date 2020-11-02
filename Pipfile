@@ -20,6 +20,7 @@ authlib = "*"
 dataclasses-json = "==0.5.2"
 gunicorn = "*"
 requests = "*"
+sentry-sdk = "*"
 
 [requires]
 python_version = "3.9"
