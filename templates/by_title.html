@@ -1,26 +1,52 @@
-<!--
-index: {{ url_for('.index', _external=True) }}
--->
+<html>
+  <head>
+    <title>Mass Merge</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/typebase.css/0.5.0/typebase.min.css"
+      integrity="sha512-xQXe8kW/gR2YuKe18ODhp+oEte9uZxWcPA1Axt6AHe7xq2mMFNZm8O482u68v6zAVb6yiO0vJJ5Jzd6B9UaoPg=="
+      crossorigin="anonymous"
+    />
+    <link
+      href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300|Cantata+One"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!--
+    index: {{ url_for('.index', _external=True) }}
+    -->
+  </head>
 
-<h3>Hi {{user_info.login}}</h3>
+  <body>
+    <article>
+      <header>
+        <h3>Hi {{user_info.login}}</h3>
+      </header>
 
-<ul>
-  {% for message in get_flashed_messages() %}
-  <li>{{ message }}</li>
-  {% endfor %}
-</ul>
+      <ul>
+        {% for message in get_flashed_messages() %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
 
-<form method="POST">
-  <ul>
-    {% for title, prs in by_title.items() %}
-    <li>
-      <label>
-        <input name="{{title}}" type="checkbox" value='{{ prs | tojson }}' />
-        {{title}}
-      </label>
-    </li>
-    {% endfor %}
-  </ul>
+      <form method="POST">
+        <ul>
+          {% for title, prs in by_title.items() %}
+          <li>
+            <label>
+              <input
+                name="{{title}}"
+                type="checkbox"
+                value='{{ prs | tojson }}'
+              />
+              {{title}}
+            </label>
+          </li>
+          {% endfor %}
+        </ul>
 
-  <input type="submit" value="Merge" />
-</form>
+        <input type="submit" value="Merge" />
+      </form>
+    </article>
+  </body>
+</html>
