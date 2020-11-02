@@ -19,6 +19,7 @@ cryptography = "*"
 authlib = "*"
 dataclasses-json = "==0.5.2"
 gunicorn = "*"
+requests = "*"
 
 [requires]
 python_version = "3.9"
