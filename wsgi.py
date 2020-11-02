@@ -10,8 +10,8 @@ if 'SENTRY_DSN' in os.environ:
     sentry_sdk.init(
         os.environ['SENTRY_DSN'],
         integrations=[FlaskIntegration()],
-        release=os.environ['HEROKU_SLUG_COMMIT'],
-        traces_sample_rate=0.75,
+        release=os.environ.get('HEROKU_SLUG_COMMIT'),
+        traces_sample_rate=1.0,
     )
 
 app = create_app()
