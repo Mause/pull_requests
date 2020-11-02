@@ -5,7 +5,6 @@ import time
 from asyncio import gather, get_event_loop, new_event_loop, set_event_loop
 from collections import ChainMap
 from datetime import datetime, timedelta, timezone
-from itertools import chain
 
 import jwt
 import requests
@@ -111,13 +110,17 @@ async def pair(pr, job):
 
 
 def post():
-    selected = list(chain.from_iterable(map(json.loads, request.form.values())))
+    selected = [
+        {'pr_name': pr_name, 'repo': pr['repo'], 'id': pr['id']}
+        for pr_name, prs in request.form.items()
+        for pr in json.loads(prs)
+    ]
 
     gathered = get().run_until_complete(
         gather(
             *[
                 pair(
-                    pr['repo'],
+                    pr,
                     AcceptPrs.execute_async(
                         pr['id'],
                         on_before_callback=add_token(
@@ -131,12 +134,14 @@ def post():
     )
 
     did_error = False
-    for repo, result in gathered:
+    for meta, result in gathered:
         if result.errors:
             print(result)
             did_error = True
             for error in result.errors:
-                flash(f'Merging pr into {repo} resulted in "{error["message"]}"')
+                flash(
+                    f'Merging pr {meta["pr_name"]} into {meta["repo"]} resulted in "{error["message"]}"'
+                )
 
     if not did_error:
         flash('Completed without error')
