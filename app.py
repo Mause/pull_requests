@@ -58,7 +58,7 @@ oauth.register(
     userinfo_endpoint='https://api.github.com/user',
     fetch_token=fetch_token,
     compliance_fix=compliance_fix,
-    update_token=lambda token: session.__setitem__('token', token),
+    update_token=lambda token, access_token, refresh_token: session.__setitem__('token', token),
 )
 
 
