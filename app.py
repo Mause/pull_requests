@@ -143,6 +143,11 @@ def index():
             .isoformat(),
         )
 
+    user_info = oauth.github.get(
+        'https://api.github.com/user'
+    )  # also triggers token refresh
+    user_info.raise_for_status()
+
     if request.method == 'POST':
         return post()
 
@@ -153,7 +158,9 @@ def index():
         for title, prs in by_title.items()
     }
 
-    return render_template('by_title.html', by_title=by_title_ids)
+    return render_template(
+        'by_title.html', by_title=by_title_ids, user_info=user_info.json()
+    )
 
 
 def create_app():
