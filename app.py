@@ -1,8 +1,9 @@
 import json
+import logging
 import os
 from asyncio import gather, get_event_loop, new_event_loop, set_event_loop
 from collections import ChainMap
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from itertools import chain
 
 import jwt
@@ -23,6 +24,10 @@ from flask import (
 from main import AcceptPrs, add_token, get_by_title
 
 app = Blueprint(__name__, 'app')
+logging.basicConfig(level=logging.DEBUG)
+
+UTC = timezone(timedelta(seconds=0))
+GMT_8 = timezone(timedelta(hours=8))
 
 
 def fetch_token():
@@ -127,6 +132,15 @@ def index():
     if not oauth.github.token:
         return oauth.github.authorize_redirect(
             redirect_url=url_for('.callback', _external=True)
+        )
+
+    for key in ('expires_at', 'refresh_token_expires_at'):
+        logging.info(
+            '%s expires at %s',
+            key,
+            datetime.fromtimestamp(oauth.github.token[key], UTC)
+            .astimezone(GMT_8)
+            .isoformat(),
         )
 
     if request.method == 'POST':
