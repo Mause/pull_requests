@@ -56,7 +56,7 @@ oauth.register(
     client_kwargs={'scope': 'repo pr'},
     authorize_url='https://github.com/login/oauth/authorize',
     access_token_url='https://github.com/login/oauth/access_token',
-    userinfo_url='https://api.github.com/user',
+    userinfo_endpoint='https://api.github.com/user',
     fetch_token=fetch_token,
     compliance_fix=compliance_fix,
     update_token=lambda token: session.__setitem__('token', token),
@@ -160,10 +160,7 @@ def index():
             .isoformat(),
         )
 
-    user_info = oauth.github.get(
-        'https://api.github.com/user'
-    )  # also triggers token refresh
-    user_info.raise_for_status()
+    user_info = oauth.github.userinfo()  # also triggers token refresh
 
     if request.method == 'POST':
         return post()
@@ -175,9 +172,7 @@ def index():
         for title, prs in by_title.items()
     }
 
-    return render_template(
-        'by_title.html', by_title=by_title_ids, user_info=user_info.json()
-    )
+    return render_template('by_title.html', by_title=by_title_ids, user_info=user_info)
 
 
 def create_app():
