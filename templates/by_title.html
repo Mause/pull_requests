@@ -12,6 +12,47 @@
       rel="stylesheet"
       type="text/css"
     />
+    <style>
+      article {
+        margin: 0 auto;
+        max-width: 30%;
+      }
+      a.btn {
+        display: inline-block;
+        background-color: #5e9ee4;
+        padding: 1rem;
+        color: white;
+        text-decoration: none;
+        border-radius: 0.2rem;
+        border: 2px solid #5e9ee4;
+        margin: 0 0.5rem;
+        line-height: 1rem;
+        -webkit-transition: all 0.1s ease-in-out;
+        -moz-transition: all 0.1s ease-in-out;
+        -o-transition: all 0.1s ease-in-out;
+        transition: all 0.1s ease-in-out;
+      }
+      a.btn:hover {
+        background-color: #8ab8eb;
+        cursor: pointer;
+      }
+      a.btn.subtle {
+        background: none;
+        color: #5e9ee4;
+      }
+      a.btn.subtle:hover {
+        color: white;
+        background-color: #8ab8eb;
+      }
+      .btnBlock {
+        text-align: center;
+        -webkit-perspective: 300px;
+        perspective: 300px;
+      }
+      html {
+        font-family: 'Source Sans Pro', sans-serif;
+      }
+    </style>
     <!--
     index: {{ url_for('.index', _external=True) }}
     -->
@@ -20,7 +61,8 @@
   <body>
     <article>
       <header>
-        <h3>Hi {{user_info.login}}</h3>
+        <h1>Mass Merge</h1>
+        <h3>Hi {{user_info.login}} - ready to merge some pr's?</h3>
       </header>
 
       <ul>
@@ -45,7 +87,9 @@
           {% endfor %}
         </ul>
 
-        <input type="submit" value="Merge" />
+        <div class="btnGroup">
+          <a class="btn" onclick="document.forms[0].submit()">Merge</a>
+        </div>
       </form>
     </article>
   </body>
