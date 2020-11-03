@@ -39,9 +39,10 @@ def compliance_fix(session):
     def _fix_token_response(resp):
         data = resp.json()
 
-        data['refresh_token_expires_at'] = (
-            time.time() + data['refresh_token_expires_in']
-        )
+        if 'refresh_token_expires_in' in data:
+            data['refresh_token_expires_at'] = (
+                time.time() + data['refresh_token_expires_in']
+            )
 
         resp.json = lambda: data
         return resp
