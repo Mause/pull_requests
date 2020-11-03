@@ -65,7 +65,14 @@
     <article>
       <header>
         <h1>Mass Merge</h1>
-        <h3>Hi {{user_info.login}} - ready to merge some pr's?</h3>
+        <h3>
+          Hi {{user_info.login}} -
+          {% if by_title %}
+          ready to merge some pr's?
+          {% else %}
+          you don't have any pr's to merge
+          {% endif %}
+        </h3>
       </header>
 
       <ul>
