@@ -59,7 +59,9 @@ oauth.register(
     userinfo_endpoint='https://api.github.com/user',
     fetch_token=fetch_token,
     compliance_fix=compliance_fix,
-    update_token=lambda token, access_token, refresh_token: session.__setitem__('token', token),
+    update_token=lambda token, access_token, refresh_token: session.__setitem__(
+        'token', token
+    ),
 )
 
 
@@ -158,12 +160,11 @@ def index():
         )
 
     for key in ('expires_at', 'refresh_token_expires_at'):
+        timestamp = oauth.github.token.get(key)
         logging.info(
             '%s expires at %s',
             key,
-            datetime.fromtimestamp(oauth.github.token[key], UTC)
-            .astimezone(GMT_8)
-            .isoformat(),
+            timestamp and datetime.fromtimestamp(timestamp, UTC).astimezone(GMT_8).isoformat(),
         )
 
     user_info = oauth.github.userinfo()  # also triggers token refresh
