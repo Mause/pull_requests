@@ -46,6 +46,7 @@ def compliance_fix(session):
         return resp
 
     session.register_compliance_hook('access_token_response', _fix_token_response)
+    session.register_compliance_hook('refresh_token_response', _fix_token_response)
 
 
 oauth = OAuth()
