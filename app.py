@@ -171,7 +171,7 @@ def index():
         )
 
     user_info = oauth.github.userinfo()  # also triggers token refresh
-    set_user({'email': user_info.email, 'login': user_info.login})
+    set_user({'email': user_info['email'], 'username': user_info['login']})
 
     if request.method == 'POST':
         return post()
