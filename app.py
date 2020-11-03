@@ -20,6 +20,7 @@ from flask import (
     session,
     url_for,
 )
+from sentry_sdk import set_user
 
 from main import AcceptPrs, add_token, get_by_title
 
@@ -95,6 +96,7 @@ def callback():
 
 @app.route('/reset')
 def reset():
+    set_user(None)
     session.clear()
 
     return redirect(url_for('.index'))
@@ -164,10 +166,12 @@ def index():
         logging.info(
             '%s expires at %s',
             key,
-            timestamp and datetime.fromtimestamp(timestamp, UTC).astimezone(GMT_8).isoformat(),
+            timestamp
+            and datetime.fromtimestamp(timestamp, UTC).astimezone(GMT_8).isoformat(),
         )
 
     user_info = oauth.github.userinfo()  # also triggers token refresh
+    set_user({'email': user_info.email, 'login': user_info.login})
 
     if request.method == 'POST':
         return post()
