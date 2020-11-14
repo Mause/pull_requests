@@ -146,7 +146,7 @@ def post():
             did_error = True
             for error in result.errors:
                 flash(
-                    f'Merging pr {meta["pr_name"]} into {meta["repo"]} resulted in "{error["message"]}"'
+                    f'Merging pr "{meta["pr_name"]}" into {meta["repo"]} resulted in "{error["message"]}"'
                 )
 
     if not did_error:
