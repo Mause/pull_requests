@@ -21,6 +21,7 @@ dataclasses-json = "==0.5.2"
 gunicorn = "*"
 requests = "*"
 sentry-sdk = {extras = ["flask"], version = "*"}
+sgqlc = "*"
 
 [requires]
 python_version = "3.9"
