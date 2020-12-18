@@ -415,11 +415,11 @@
         },
         "sgqlc": {
             "hashes": [
-                "sha256:0670a53229c4d7884760c1f351a4134aa0317499682079a41743e4092780bcf2",
-                "sha256:0c093c67aace27af224ef994519a6e52d674b02f03756f380cc750c0af0731de"
+                "sha256:8e5101da6546c6d5a51e30c8e517190a4a2d237236219b7f021ac617ba0836a2",
+                "sha256:b77335a9f2289f70fe42d2bd1941b525716e3fb6258909df6dbfe812cb89ac42"
             ],
             "index": "pypi",
-            "version": "==11.0"
+            "version": "==12.1"
         },
         "six": {
             "hashes": [
