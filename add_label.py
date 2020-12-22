@@ -5,11 +5,12 @@ from typing import Dict, Union
 from aiohttp import ClientSession
 from sgqlc.endpoint.base import BaseEndpoint
 from sgqlc.operation import Operation
-from sgqlc_schemas.github import (
+from sgqlc_schemas.github.schema import (
     AddLabelsToLabelableInput,
     AddLabelsToLabelablePayload,
+    Mutation,
+    Query,
     Repository,
-    github,
 )
 
 
@@ -18,7 +19,7 @@ class AsyncHttpEndpoint(BaseEndpoint):
     url: str
     headers: Dict[str, str] = field(default_factory=dict)
 
-    async def __call__(self, query) -> Union[github.Query, github.Mutation]:
+    async def __call__(self, query) -> Union[Query, Mutation]:
         async with ClientSession() as session:
             res = await session.post(
                 self.url,
@@ -38,7 +39,7 @@ class AsyncHttpEndpoint(BaseEndpoint):
 async def add_labels_to_labelable(
     endpoint: BaseEndpoint, repository_id: str, labelable_id: str, label: str
 ) -> AddLabelsToLabelablePayload:
-    query = Operation(github.Query)
+    query = Operation(Query)
     query.node(id=repository_id).__as__(Repository).labels(first=50).nodes().__fields__(
         'name', 'id'
     )
@@ -47,7 +48,7 @@ async def add_labels_to_labelable(
         for repo_label in (await endpoint(query)).node.labels.nodes
     }
 
-    mutation = Operation(github.Mutation)
+    mutation = Operation(Mutation)
     mutation.add_labels_to_labelable(
         input=AddLabelsToLabelableInput(
             labelable_id=labelable_id, label_ids=[labels[label]]
@@ -62,7 +63,7 @@ async def main():
         {'Authorization': 'Bearer ' + open('token.txt').read()},
     )
 
-    qu = Operation(github.Query)
+    qu = Operation(Query)
     repo = qu.repository(owner='Mause', name='media')
     repo.id()
     repo.pull_requests(first=1).nodes().__fields__('title', 'id')
