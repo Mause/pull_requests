@@ -50,4 +50,4 @@ repos:
           - flake8-aaa
         args:
           - --jobs=1
-          - --extend-ignore=W503,E203
+          - --extend-ignore=W503,E203,E501

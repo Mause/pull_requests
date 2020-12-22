@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "fea6c4a264f0aaf47bd5cdad9dd613422aefc1de172d5a8dfcbf6e6c7a2e239f"
+            "sha256": "33871dd01e03d49f6deab60966a5e2656486c22303f1066efd50e0e84b51cf49"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -421,6 +421,14 @@
             "index": "pypi",
             "version": "==12.1"
         },
+        "sgqlc-schemas": {
+            "hashes": [
+                "sha256:39d2a0ce4532f7cff84e41ebc59fff3f18576d4cc448ec81c6c33988cc1e4639",
+                "sha256:ed63f12dfcec6e9964017493d0e96ae7f33f059d096a766a103e70ee680f6a87"
+            ],
+            "index": "pypi",
+            "version": "==0.1.0"
+        },
         "six": {
             "hashes": [
                 "sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259",
@@ -608,6 +616,14 @@
             ],
             "index": "pypi",
             "version": "==0.1.1"
+        },
+        "graphql-core": {
+            "hashes": [
+                "sha256:b1826fbd1c6c290f7180d758ecf9c3859a46574cff324bf35a10167533c0e463",
+                "sha256:c056424cbdaa0ff67446e4379772f43746bad50a44ec23d643b9bdcd052f5b3a"
+            ],
+            "markers": "python_version >= '3.6' and python_version < '4'",
+            "version": "==3.1.2"
         },
         "graphql-core-next": {
             "hashes": [
@@ -817,6 +833,23 @@
             ],
             "index": "pypi",
             "version": "==2.25.1"
+        },
+        "sgqlc": {
+            "hashes": [
+                "sha256:0670a53229c4d7884760c1f351a4134aa0317499682079a41743e4092780bcf2",
+                "sha256:0c093c67aace27af224ef994519a6e52d674b02f03756f380cc750c0af0731de",
+                "sha256:8aae431597e388934cb5431f86a50775f9ecad4cd7eceb0597acc54dfa262015"
+            ],
+            "index": "pypi",
+            "version": "==11.0"
+        },
+        "sgqlc-schemas": {
+            "hashes": [
+                "sha256:39d2a0ce4532f7cff84e41ebc59fff3f18576d4cc448ec81c6c33988cc1e4639",
+                "sha256:ed63f12dfcec6e9964017493d0e96ae7f33f059d096a766a103e70ee680f6a87"
+            ],
+            "index": "pypi",
+            "version": "==0.1.0"
         },
         "six": {
             "hashes": [

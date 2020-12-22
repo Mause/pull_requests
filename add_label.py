@@ -5,8 +5,12 @@ from typing import Dict, Union
 from aiohttp import ClientSession
 from sgqlc.endpoint.base import BaseEndpoint
 from sgqlc.operation import Operation
-
-from github import AddLabelsToLabelableInput, Repository, github
+from sgqlc_schemas.github import (
+    AddLabelsToLabelableInput,
+    AddLabelsToLabelablePayload,
+    Repository,
+    github,
+)
 
 
 @dataclass
@@ -33,7 +37,7 @@ class AsyncHttpEndpoint(BaseEndpoint):
 
 async def add_labels_to_labelable(
     endpoint: BaseEndpoint, repository_id: str, labelable_id: str, label: str
-):
+) -> AddLabelsToLabelablePayload:
     query = Operation(github.Query)
     query.node(id=repository_id).__as__(Repository).labels(first=50).nodes().__fields__(
         'name', 'id'
