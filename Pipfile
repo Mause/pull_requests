@@ -8,6 +8,9 @@ ipdb = "*"
 gql-next = "*"
 python-dotenv = "*"
 pre-commit = "*"
+pytest = "*"
+responses = "*"
+aioresponses = "*"
 
 [packages]
 aiohttp = "*"
