@@ -75,7 +75,7 @@ async def get_labels_for_repo(
     )
     return {
         repo_label.name: repo_label.id
-        for repo_label in (await endpoint(query)).node.labels.nodes
+        for repo_label in (await endpoint(query)).data.node.labels.nodes
     }
 
 
@@ -89,7 +89,7 @@ async def add_labels_to_labelable(
             labelable_id=labelable_id, label_ids=[labels[label]]
         )
     )
-    return (await endpoint(mutation)).add_labels_to_labelable
+    return (await endpoint(mutation)).data.add_labels_to_labelable
 
 
 async def build_endpoint(token: str) -> AsyncHttpEndpoint:
@@ -106,14 +106,14 @@ async def main():
     repo = qu.repository(owner='Mause', name='media')
     repo.id()
     repo.pull_requests(first=1).nodes().__fields__('title', 'id')
-    res = (await endpoint(qu)).repository
+    res = (await endpoint(qu)).data.repository
     await add_labels_to_labelable(
         endpoint, res.id, res.pull_requests.nodes[0].id, 'automerge'
     )
 
     op = Operation(Mutation)
     op = build_merge([res.pull_requests.nodes[0].id])
-    res = await endpoint(op)
+    res = (await endpoint(op)).data
     print(res)
 
 
