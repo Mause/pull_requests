@@ -20,12 +20,12 @@ V = TypeVar('V')
 
 
 def groupby(iterable: Iterable[V], key: Callable[[V], K]) -> Dict[K, List[V]]:
-    return {k: list(v) for k, v in _groupby(sorted(iterable, key=key), key)}
+    return {k: list(v) for k, v in _groupby(sorted(iterable, key=key), key)}  # type: ignore
 
 
 def add_token(token):
     def callback(params: Mapping[str, str], headers: Mapping[str, str]) -> None:
-        headers['Authorization'] = f'Bearer {token}'
+        headers['Authorization'] = f'Bearer {token}'  # type: ignore
 
     return callback
 
