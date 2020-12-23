@@ -2,7 +2,7 @@ import re
 from dataclasses import dataclass
 from itertools import chain
 from itertools import groupby as _groupby
-from typing import Callable, Dict, Iterable, List, Mapping, Optional, TypeVar, Union
+from typing import Callable, Dict, Iterable, List, Mapping, Optional, TypeVar
 
 from PyInquirer import prompt
 from tqdm import tqdm
@@ -30,10 +30,9 @@ def add_token(token):
     return callback
 
 
-# Using Union to define an alias
-PullRequest = Union[
+PullRequest = (
     GetPullRequests.GetPullRequestsData.User.RepositoryConnection.RepositoryEdge.Repository.PullRequestConnection.PullRequestEdge.PullRequest
-]
+)
 
 
 def paginate(token: str) -> Iterable[PullRequest]:
