@@ -6,12 +6,12 @@ from itertools import groupby as _groupby
 from typing import Callable, Dict, Iterable, List, Mapping, Optional, TypeVar
 
 from PyInquirer import prompt
-from tqdm import tqdm
-
-from add_label import build_endpoint, build_merge
 
 # these two files are generated using gql-next: gql run
 from query import GetPullRequests
+from tqdm import tqdm
+
+from add_label import build_endpoint, build_merge
 
 TITLE_RE = re.compile(r'Bump (?P<name>[^ ]+) from (?P<from>[^ ]+) to (?P<to>[^ ]+)')
 
