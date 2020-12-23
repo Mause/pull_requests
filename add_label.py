@@ -3,6 +3,8 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Union
 
 from aiohttp import ClientSession
+from asyncache import cached
+from cachetools import TTLCache
 from pydantic import BaseModel
 from sgqlc.endpoint.base import BaseEndpoint
 from sgqlc.operation import Operation
@@ -63,18 +65,24 @@ class AsyncHttpEndpoint(BaseEndpoint):
             return DataWithErrors(data=query + data, errors=data['errors'])
 
 
-async def add_labels_to_labelable(
-    endpoint: BaseEndpoint, repository_id: str, labelable_id: str, label: str
-) -> AddLabelsToLabelablePayload:
+@cached(TTLCache(1024, 360), lambda endpoint, repository_id: repository_id)
+async def get_labels_for_repo(
+    endpoint: AsyncHttpEndpoint, repository_id: str
+) -> Dict[str, str]:
     query = Operation(Query)
     query.node(id=repository_id).__as__(Repository).labels(first=50).nodes().__fields__(
         'name', 'id'
     )
-    labels = {
+    return {
         repo_label.name: repo_label.id
         for repo_label in (await endpoint(query)).node.labels.nodes
     }
 
+
+async def add_labels_to_labelable(
+    endpoint: AsyncHttpEndpoint, repository_id: str, labelable_id: str, label: str
+) -> AddLabelsToLabelablePayload:
+    labels = await get_labels_for_repo(endpoint, repository_id)
     mutation = Operation(Mutation)
     mutation.add_labels_to_labelable(
         input=AddLabelsToLabelableInput(
