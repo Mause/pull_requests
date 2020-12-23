@@ -1,7 +1,0 @@
-mutation AcceptPrs($pullRequestId: ID!) {
-  mergePullRequest(input: {pullRequestId: $pullRequestId}) {
-    pullRequest {
-      title
-    }
-  }
-}

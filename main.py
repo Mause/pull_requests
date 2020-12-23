@@ -1,4 +1,5 @@
 import re
+from asyncio import get_event_loop
 from dataclasses import dataclass
 from itertools import chain
 from itertools import groupby as _groupby
@@ -7,7 +8,7 @@ from typing import Callable, Dict, Iterable, List, Mapping, Optional, TypeVar
 from PyInquirer import prompt
 from tqdm import tqdm
 
-from accept import AcceptPrs
+from add_label import build_endpoint, build_merge
 
 # these two files are generated using gql-next: gql run
 from query import GetPullRequests
@@ -88,7 +89,7 @@ def get_by_title(token: str) -> Dict[str, List[PullRequest]]:
     return groupby(prs, lambda pr: normalise_title(pr.title))
 
 
-def main():
+async def main():
     token = open('token.txt').read().strip()
     by_title = get_by_title(token)
     if not by_title:
@@ -120,11 +121,12 @@ def main():
     if not title:
         return
     selected = get_selected(by_title, answers)
+
+    endpoint = await build_endpoint(token)
+
     if answers.get('merge'):
         for pr in tqdm(selected):
-            errors = AcceptPrs.execute(
-                pr.id, on_before_callback=add_token(token)
-            ).errors
+            errors = (await endpoint(build_merge([]))).errors
             if errors:
                 print(pr.title, [error['message'] for error in errors])
 
@@ -135,4 +137,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    get_event_loop().run_until_complete(main())

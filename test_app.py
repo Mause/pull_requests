@@ -52,7 +52,11 @@ def test_app(app, test_client, responses, aioresponses):
     )
     aioresponses.post(
         'https://api.github.com/graphql',
-        payload={'errors': [{'message': 'Error in the tubes'}]},
+        payload={
+            'errors': [
+                {'message': 'Error in the tubes', 'locations': [], 'path': ['merge_0']}
+            ]
+        },
     )
 
     app.session_interface = MySessionInterface()

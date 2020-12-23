@@ -2,7 +2,7 @@ import json
 import logging
 import os
 import time
-from asyncio import gather, get_event_loop, new_event_loop, set_event_loop
+from asyncio import get_event_loop, new_event_loop, set_event_loop
 from collections import ChainMap
 from datetime import datetime, timedelta, timezone
 
@@ -20,8 +20,10 @@ from flask import (
     url_for,
 )
 from sentry_sdk import set_user
+from werkzeug import Response
 
-from main import AcceptPrs, add_token, get_by_title
+from add_label import build_endpoint, build_merge
+from main import get_by_title
 
 app = Blueprint(__name__, 'app')
 logging.basicConfig(level=logging.DEBUG)
@@ -114,39 +116,35 @@ async def pair(pr, job):
     return (pr, await job)
 
 
-def post():
+async def post(token) -> Response:
     selected = [
         {'pr_name': pr_name, 'repo': pr['repo'], 'id': pr['id']}
         for pr_name, prs in request.form.items()
         for pr in json.loads(prs)
     ]
 
-    gathered = get().run_until_complete(
-        gather(
-            *[
-                pair(
-                    pr,
-                    AcceptPrs.execute_async(
-                        pr['id'],
-                        on_before_callback=add_token(
-                            oauth.github.token['access_token']
-                        ),
-                    ),
-                )
-                for pr in selected
-            ]
-        )
-    )
+    assert selected, 'no prs selected'
+    op = build_merge([pr['id'] for pr in selected])
+
+    endpoint = await build_endpoint(token)
+
+    result = await endpoint(op)
 
     did_error = False
-    for meta, result in gathered:
-        if result.errors:
-            print(result)
-            did_error = True
-            for error in result.errors:
+    if result.errors:
+        print(result)
+        did_error = True
+
+        for error in result.errors:
+            if error.path:
+                idx = int(error.path[0][len('merge_') :])
+                meta = selected[idx]
+
                 flash(
-                    f'Merging pr "{meta["pr_name"]}" into {meta["repo"]} resulted in "{error["message"]}"'
+                    f'Merging pr "{meta["pr_name"]}" into {meta["repo"]} resulted in "{error.message}"'
                 )
+            else:
+                flash(error.message)
 
     if not did_error:
         flash('Completed without error')
@@ -174,7 +172,7 @@ def index():
     set_user({'email': user_info['email'], 'username': user_info['login']})
 
     if request.method == 'POST':
-        return post()
+        return get().run_until_complete(post(oauth.github.token['access_token']))
 
     by_title = get_by_title(oauth.github.token['access_token'])
 
