@@ -27,6 +27,7 @@ requests = "*"
 sentry-sdk = {extras = ["flask"], version = "*"}
 sgqlc = "*"
 sgqlc-schemas = "*"
+pydantic = "*"
 
 [requires]
 python_version = "3.9"
