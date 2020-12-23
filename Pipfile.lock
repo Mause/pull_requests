@@ -250,10 +250,10 @@
         },
         "marshmallow": {
             "hashes": [
-                "sha256:73facc37462dfc0b27f571bdaffbef7709e19f7a616beb3802ea425b07843f4e",
-                "sha256:e26763201474b588d144dae9a32bdd945cd26a06c943bc746a6882e850475378"
+                "sha256:4ab2fdb7f36eb61c3665da67a7ce281c8900db08d72ba6bf0e695828253581f7",
+                "sha256:eca81d53aa4aafbc0e20566973d0d2e50ce8bf0ee15165bb799bec0df1e50177"
             ],
-            "version": "==3.9.1"
+            "version": "==3.10.0"
         },
         "marshmallow-enum": {
             "hashes": [
@@ -342,11 +342,11 @@
         },
         "pyjwt": {
             "hashes": [
-                "sha256:5c6eca3c2940464d106b99ba83b00c6add741c9becaec087fb7ccdefea71350e",
-                "sha256:8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96"
+                "sha256:5c2ff2eb27d7e342dfc3cafcc16412781f06db2690fbef81922b0172598f085b",
+                "sha256:7a2b271c6dac2fda9e0c33d176c4253faba2c6c6b3a99c7f28a32c3c97522779"
             ],
             "index": "pypi",
-            "version": "==1.7.1"
+            "version": "==2.0.0"
         },
         "regex": {
             "hashes": [
@@ -617,14 +617,6 @@
             "index": "pypi",
             "version": "==0.1.1"
         },
-        "graphql-core": {
-            "hashes": [
-                "sha256:b1826fbd1c6c290f7180d758ecf9c3859a46574cff324bf35a10167533c0e463",
-                "sha256:c056424cbdaa0ff67446e4379772f43746bad50a44ec23d643b9bdcd052f5b3a"
-            ],
-            "markers": "python_version >= '3.6' and python_version < '4'",
-            "version": "==3.1.2"
-        },
         "graphql-core-next": {
             "hashes": [
                 "sha256:5a6cdf23a3b24fa738a903b9fcdaa1db2768a6552f8d1fb8fb79d9add16d090d",
@@ -716,10 +708,10 @@
         },
         "marshmallow": {
             "hashes": [
-                "sha256:73facc37462dfc0b27f571bdaffbef7709e19f7a616beb3802ea425b07843f4e",
-                "sha256:e26763201474b588d144dae9a32bdd945cd26a06c943bc746a6882e850475378"
+                "sha256:4ab2fdb7f36eb61c3665da67a7ce281c8900db08d72ba6bf0e695828253581f7",
+                "sha256:eca81d53aa4aafbc0e20566973d0d2e50ce8bf0ee15165bb799bec0df1e50177"
             ],
-            "version": "==3.9.1"
+            "version": "==3.10.0"
         },
         "marshmallow-enum": {
             "hashes": [
@@ -833,23 +825,6 @@
             ],
             "index": "pypi",
             "version": "==2.25.1"
-        },
-        "sgqlc": {
-            "hashes": [
-                "sha256:0670a53229c4d7884760c1f351a4134aa0317499682079a41743e4092780bcf2",
-                "sha256:0c093c67aace27af224ef994519a6e52d674b02f03756f380cc750c0af0731de",
-                "sha256:8aae431597e388934cb5431f86a50775f9ecad4cd7eceb0597acc54dfa262015"
-            ],
-            "index": "pypi",
-            "version": "==11.0"
-        },
-        "sgqlc-schemas": {
-            "hashes": [
-                "sha256:39d2a0ce4532f7cff84e41ebc59fff3f18576d4cc448ec81c6c33988cc1e4639",
-                "sha256:ed63f12dfcec6e9964017493d0e96ae7f33f059d096a766a103e70ee680f6a87"
-            ],
-            "index": "pypi",
-            "version": "==0.1.0"
         },
         "six": {
             "hashes": [
