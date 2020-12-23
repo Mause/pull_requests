@@ -186,7 +186,7 @@ def index():
 
 def create_app():
     papp = Flask(__name__)
-    papp.secret_key = '0000000000000000000000000'
+    papp.secret_key = os.environ['SECRET_KEY']
     papp.config = ChainMap(papp.config, os.environ)
     papp.register_blueprint(app)
 

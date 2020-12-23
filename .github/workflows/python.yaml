@@ -48,3 +48,4 @@ jobs:
         env:
           PLEX_USERNAME: "username"
           PLEX_PASSWORD: "password"
+          SECRET_KEY: "hello world hello world"
