@@ -15,9 +15,9 @@ query GetPullRequests($cursor: String) {
                   login
                 }
                 labels(first: 20) {
-                    nodes {
-                        name
-                    }
+                  nodes {
+                    name
+                  }
                 }
                 repository {
                   name
