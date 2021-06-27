@@ -12,6 +12,7 @@ pytest = "*"
 responses = "*"
 aioresponses = "*"
 mypy = "*"
+types-requests = "*"
 
 [packages]
 aiohttp = "*"

@@ -53,7 +53,7 @@
         perspective: 300px;
       }
       html {
-        font-family: 'Source Sans Pro', sans-serif;
+        font-family: "Source Sans Pro", sans-serif;
       }
     </style>
     <!--
@@ -66,12 +66,8 @@
       <header>
         <h1>Mass Merge</h1>
         <h3>
-          Hi {{user_info.login}} -
-          {% if by_title %}
-          ready to merge some pr's?
-          {% else %}
-          you don't have any pr's to merge
-          {% endif %}
+          Hi {{user_info.login}} - {% if by_title %} ready to merge some pr's?
+          {% else %} you don't have any pr's to merge {% endif %}
         </h3>
       </header>
 
@@ -89,7 +85,7 @@
               <input
                 name="{{title}}"
                 type="checkbox"
-                value='{{ prs | tojson }}'
+                value="{{ prs | tojson }}"
               />
               {{title}}
             </label>
