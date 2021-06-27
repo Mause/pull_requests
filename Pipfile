@@ -29,6 +29,8 @@ sentry-sdk = {extras = ["flask"], version = "*"}
 sgqlc = "*"
 sgqlc-schemas = "*"
 pydantic = "*"
+cachetools = "*"
+asyncache = "*"
 
 [requires]
 python_version = "3.9"
